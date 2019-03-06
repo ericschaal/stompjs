@@ -1400,6 +1400,13 @@ var Parser = /** @class */ (function () {
         else {
             chunk = this._encoder.encode(segment);
         }
+        // #89 workaround https://github.com/stomp-js/stompjs/issues/89
+        if (chunk[chunk.length - 1] !== 0) {
+            var chunkWithNull = new Uint8Array(chunk.length + 1);
+            chunkWithNull.set(chunk, 0);
+            chunkWithNull[chunk.length] = 0;
+            chunk = chunkWithNull;
+        }
         // tslint:disable-next-line:prefer-for-of
         for (var i = 0; i < chunk.length; i++) {
             var byte = chunk[i];
@@ -2033,7 +2040,7 @@ exports.Versions = Versions;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/kdeepak/MyWork/Tech/stomp/stompjs/src/index.ts */"./src/index.ts");
+module.exports = __webpack_require__(/*! /Users/eschaal/src/io/my01/stompjs/src/index.ts */"./src/index.ts");
 
 
 /***/ })

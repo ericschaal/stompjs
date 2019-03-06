@@ -75,6 +75,13 @@ var Parser = /** @class */ (function () {
         else {
             chunk = this._encoder.encode(segment);
         }
+        // #89 workaround https://github.com/stomp-js/stompjs/issues/89
+        if (chunk[chunk.length - 1] !== 0) {
+            var chunkWithNull = new Uint8Array(chunk.length + 1);
+            chunkWithNull.set(chunk, 0);
+            chunkWithNull[chunk.length] = 0;
+            chunk = chunkWithNull;
+        }
         // tslint:disable-next-line:prefer-for-of
         for (var i = 0; i < chunk.length; i++) {
             var byte = chunk[i];
